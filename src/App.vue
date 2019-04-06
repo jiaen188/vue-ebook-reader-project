@@ -17,10 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import './assets/styles/global.scss';
 .text {
   font-family: 'Days One';
-  font-size: 1rem;
+  font-size: px2rem(20);
   color: orange;
 }
 </style>
