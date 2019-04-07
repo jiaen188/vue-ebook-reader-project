@@ -1,15 +1,16 @@
 const book = {
+  namespaced: true,
   state: {
-    test: 1
+    fileName: ''
   },
   mutations: {
-    'SET_TEST': (state, payload) => {
-      state.test = payload
+    'SET_FILENAME': (state, payload) => {
+      state.fileName = payload
     }
   },
   actions: {
-    setTest({ commit }, params) {
-      return commit('SET_TEST', params)
+    setFileName({ commit }, params) {
+      return commit('SET_FILENAME', params)
     }
   }
 }
