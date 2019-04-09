@@ -12,12 +12,14 @@ global.ePub = Epub
 export default {
   computed: {
     ...mapState('book', [
-      'fileName'
+      'fileName',
+      'menuVisible'
     ])
   },
   methods: {
     ...mapActions('book', [
-      'setFileName'
+      'setFileName',
+      'setMenuVisible'
     ]),
     prevPage() {
       if (this.rendition) {
@@ -30,7 +32,7 @@ export default {
       }
     },
     toggleTitleAndMenu() {
-
+      this.setMenuVisible(!this.menuVisible)
     },
     initEpub() {
       const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
