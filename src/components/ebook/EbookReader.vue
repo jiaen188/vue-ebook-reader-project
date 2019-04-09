@@ -24,15 +24,20 @@ export default {
     prevPage() {
       if (this.rendition) {
         this.rendition.prev()
+        this.hideTitleAndMenu()
       }
     },
     nextPage() {
       if (this.rendition) {
         this.rendition.next()
+        this.hideTitleAndMenu()
       }
     },
     toggleTitleAndMenu() {
       this.setMenuVisible(!this.menuVisible)
+    },
+    hideTitleAndMenu() {
+      this.setMenuVisible(false)
     },
     initEpub() {
       const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
