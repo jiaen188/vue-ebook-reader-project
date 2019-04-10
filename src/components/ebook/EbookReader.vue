@@ -38,6 +38,7 @@ export default {
       const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
       this.book = new Epub('/2018_Book_AgileProcessesInSoftwareEngine.epub' || url)
       console.log('this.book', this.book)
+      this.setCurrentBook(this.book)
       this.rendition = this.book.renderTo('read', {
         width: innerWidth,
         height: innerHeight,

@@ -26,12 +26,12 @@ export default {
   mixins: [ebookMixin],
   methods: {
     handleBack() {}
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/styles/global'; 
+@import '../../assets/styles/global';
 .title-wrapper {
     position: absolute;
     top: 0;
