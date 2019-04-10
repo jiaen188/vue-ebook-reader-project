@@ -5,17 +5,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { ebookMixin } from '../../utils/mixin'
+import { mapActions } from 'vuex'
 import Epub from 'epubjs'
 global.ePub = Epub
 
 export default {
-  computed: {
-    ...mapState('book', [
-      'fileName',
-      'menuVisible'
-    ])
-  },
+  mixins: [ebookMixin],
   methods: {
     ...mapActions('book', [
       'setFileName',

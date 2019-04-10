@@ -20,17 +20,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { ebookMixin } from '../../utils/mixin'
 
 export default {
+  mixins: [ebookMixin],
   methods: {
     handleBack() {}
   },
-  computed: {
-    ...mapState('book', [
-      'menuVisible'
-    ])
-  }
 }
 </script>
 
