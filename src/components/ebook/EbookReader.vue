@@ -6,17 +6,12 @@
 
 <script>
 import { ebookMixin } from '../../utils/mixin'
-import { mapActions } from 'vuex'
 import Epub from 'epubjs'
 global.ePub = Epub
 
 export default {
   mixins: [ebookMixin],
   methods: {
-    ...mapActions('book', [
-      'setFileName',
-      'setMenuVisible'
-    ]),
     prevPage() {
       if (this.rendition) {
         this.rendition.prev()
