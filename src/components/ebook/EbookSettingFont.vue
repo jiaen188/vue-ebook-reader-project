@@ -43,6 +43,11 @@ export default {
     setFontSize(fontsize) {
       this.setDefaultFontsize(fontsize)
       this.currentBook.rendition.themes.fontSize(fontsize)
+      // 原来的设置 字号方法无用，改
+      const contents = this.currentBook.rendition.getContents()
+      contents.forEach((content) => {
+        content.content.style.fontSize = `${fontsize}px`
+      })
     },
     showFontFamily() {
       this.setFontFamilyVisible(true)

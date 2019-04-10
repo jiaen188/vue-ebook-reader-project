@@ -8,7 +8,7 @@
       <span class="ebook-popup-title-text">选择字体</span>
     </div>
     <div class="ebook-popup-list-wrapper">
-      <div class="ebook-popup-item" v-for="(item, index) in fontFamilyList" :key="index">
+      <div class="ebook-popup-item" @click="setFontFamily(item.font)" v-for="(item, index) in fontFamilyList" :key="index">
         <div class="ebook-popup-item-text" :class="{'selected': isSelect(item)}">{{ item.font }}</div>
         <div class="ebook-popup-item-check" v-if="isSelect(item)">
           <span class="icon-check"></span>
@@ -31,6 +31,15 @@ export default {
     }
   },
   methods: {
+    setFontFamily(font) {
+      this.setDefaultFontFamily(font)
+      // 目前仅支持 cabin 和 default
+      if (font === 'Default') {
+        this.currentBook.rendition.themes.font('Times New Roman')
+      } else {
+        this.currentBook.rendition.themes.font(font)
+      }
+    },
     hide() {
       this.setFontFamilyVisible(false)
     },

@@ -27,12 +27,14 @@ export default {
     toggleTitleAndMenu() {
       if (this.menuVisible) {
         this.setSettingVisible(-1)
+        this.setFontFamilyVisible(false)
       }
       this.setMenuVisible(!this.menuVisible)
     },
     hideTitleAndMenu() {
       this.setMenuVisible(false)
       this.setSettingVisible(-1)
+      this.setFontFamilyVisible(false)
     },
     initEpub() {
       const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
@@ -62,6 +64,15 @@ export default {
         }
         event.preventDefault()
         event.stopPropagation()
+      })
+      this.rendition.hooks.content.register(contents => {
+        // 目前仅支持 cabin
+        Promise.all([
+          contents.addStylesheet('../../assets/fonts/dayOne.css'),
+          contents.addStylesheet('../../assets/fonts/cabin.css'),
+          contents.addStylesheet('../../assets/fonts/montserrat.css'),
+          contents.addStylesheet('../../assets/fonts/tangerine.css')
+        ]).then(() => {})
       })
     }
   },
