@@ -6,7 +6,8 @@ const book = {
     settingVisible: -1, // -1 不显示，0: 字号，1:主题，2:进度，3:目录
     defaultFontSize: 16,
     currentBook: null,
-    defaultFontFamily: 'Default'
+    defaultFontFamily: 'Default',
+    fontFamilyVisible: false
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -26,6 +27,9 @@ const book = {
     },
     'SET_DEFAULT_FONT_FAMILY': (state, font) => {
       state.defaultFontFamily = font
+    },
+    'SET_FONT_FAMILY_VISIBLE': (state, payload) => {
+      state.fontFamilyVisible = payload
     }
   },
   actions: {
@@ -46,6 +50,9 @@ const book = {
     },
     setDefaultFontFamily: ({ commit }, font) => {
       return commit('SET_DEFAULT_FONT_FAMILY', font)
+    },
+    setFontFamilyVisible: ({ commit }, visible) => {
+      return commit('SET_FONT_FAMILY_VISIBLE', visible)
     }
   }
 }

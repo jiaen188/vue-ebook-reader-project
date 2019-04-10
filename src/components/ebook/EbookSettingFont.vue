@@ -44,7 +44,9 @@ export default {
       this.setDefaultFontsize(fontsize)
       this.currentBook.rendition.themes.fontSize(fontsize)
     },
-    showFontFamily() {}
+    showFontFamily() {
+      this.setFontFamilyVisible(true)
+    }
   }
 }
 </script>
