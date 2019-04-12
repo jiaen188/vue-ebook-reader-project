@@ -7,6 +7,7 @@
 <script>
 import { ebookMixin } from '../../utils/mixin'
 import Epub from 'epubjs'
+import { getFontFamily, saveFontFamily } from '../../utils/localStorage'
 global.ePub = Epub
 
 export default {
@@ -46,7 +47,15 @@ export default {
         height: innerHeight,
         methods: 'default'
       })
-      this.rendition.display()
+      this.rendition.display().then(() => {
+        let font = getFontFamily(this.fileName)
+        if (!font) {
+          saveFontFamily(this.fileName, this.defaultFontFamily)
+        } else {
+          this.rendition.themes.font(font)
+          this.setDefaultFontFamily(font)
+        }
+      })
       this.rendition.on('touchstart', event => {
         this.touchStartX = event.changedTouches[0].clientX
         this.touchStartTime = event.timeStamp

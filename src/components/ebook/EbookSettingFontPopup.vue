@@ -22,6 +22,7 @@
 <script>
 import { ebookMixin } from '../../utils/mixin'
 import { FONT_FAMILY } from '../../utils/book'
+import { saveFontFamily } from '../../utils/localStorage'
 
 export default {
   mixins: [ebookMixin],
@@ -33,6 +34,7 @@ export default {
   methods: {
     setFontFamily(font) {
       this.setDefaultFontFamily(font)
+      saveFontFamily(this.fileName, font)
       // 目前仅支持 cabin 和 default
       if (font === 'Default') {
         this.currentBook.rendition.themes.font('Times New Roman')

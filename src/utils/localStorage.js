@@ -17,3 +17,26 @@ export function removeLocalStorage(key) {
 export function clearLocalStorage() {
   return localStorage.clear()
 }
+
+export function setBookObject(fileName, key, value) {
+  let book = getLocalStorage(`${fileName}-info`) || {}
+  book[key] = value
+  setLocalStorage(`${fileName}-info`, book)
+}
+
+export function getBookObject(fileName, key) {
+  let book = getLocalStorage(`${fileName}-info`)
+  if (book) {
+    return book[key]
+  } else {
+    return null
+  }
+}
+
+export function getFontFamily(fileName) {
+  return getBookObject(fileName, 'fontFamily')
+}
+
+export function saveFontFamily(fileName, font) {
+  return setBookObject(fileName, 'fontFamily', font)
+}
