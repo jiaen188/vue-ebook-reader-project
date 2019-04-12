@@ -40,3 +40,11 @@ export function getFontFamily(fileName) {
 export function saveFontFamily(fileName, font) {
   return setBookObject(fileName, 'fontFamily', font)
 }
+
+export function getFontSize(fileName) {
+  return getBookObject(fileName, 'fontSize')
+}
+
+export function saveFontSize(fileName, fontSize) {
+  setBookObject(fileName, 'fontSize', fontSize)
+}

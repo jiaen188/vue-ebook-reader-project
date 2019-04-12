@@ -7,7 +7,7 @@
 <script>
 import { ebookMixin } from '../../utils/mixin'
 import Epub from 'epubjs'
-import { getFontFamily, saveFontFamily } from '../../utils/localStorage'
+import { getFontFamily, saveFontFamily, getFontSize, saveFontSize } from '../../utils/localStorage'
 global.ePub = Epub
 
 export default {
@@ -48,6 +48,18 @@ export default {
         methods: 'default'
       })
       this.rendition.display().then(() => {
+        let fontSize = getFontSize(this.fileName)
+        if (!fontSize) {
+          saveFontSize(this.fileName, this.defaultFontSize)
+        } else {
+          this.rendition.themes.fontSize(fontSize)
+          // 原来的设置 字号方法无用，改
+          const contents = this.rendition.getContents()
+          contents.forEach((content) => {
+            content.content.style.fontSize = `${fontSize}px`
+          })
+          this.setDefaultFontsize(fontSize)
+        }
         let font = getFontFamily(this.fileName)
         if (!font) {
           saveFontFamily(this.fileName, this.defaultFontFamily)
