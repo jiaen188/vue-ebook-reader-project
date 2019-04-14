@@ -7,7 +7,8 @@ const book = {
     defaultFontSize: 16,
     currentBook: null,
     defaultFontFamily: 'Default',
-    fontFamilyVisible: false
+    fontFamilyVisible: false,
+    defaultTheme: 'Default'
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -30,6 +31,9 @@ const book = {
     },
     'SET_FONT_FAMILY_VISIBLE': (state, payload) => {
       state.fontFamilyVisible = payload
+    },
+    'SET_DEFAULT_THEME': (state, theme) => {
+      state.defaultTheme = theme
     }
   },
   actions: {
@@ -53,6 +57,9 @@ const book = {
     },
     setFontFamilyVisible: ({ commit }, visible) => {
       return commit('SET_FONT_FAMILY_VISIBLE', visible)
+    },
+    setDefaultTheme: ({ commit }, theme) => {
+      return commit('SET_DEFAULT_THEME', theme)
     }
   }
 }
