@@ -3,7 +3,7 @@
     <div class="setting-wrapper" v-show="menuVisible && settingVisible === 1">
       <div class="setting-theme">
         <div class="setting-theme-item" v-for="(item, index) in themeList" :key="index" @click="setTheme(index)">
-          <div class="preview" :style="{background: item.style.body.background}"></div>
+          <div class="preview" :class="{'selected': item.name === defaultTheme}" :style="{background: item.style.body.background}"></div>
           <div class="text" :class="{'selected': item.name === defaultTheme}">{{item.alias}}</div>
         </div>
       </div>
@@ -13,19 +13,16 @@
 
 <script>
 import { ebookMixin } from '../../utils/mixin'
-import { themeList } from '../../utils/book'
+import { saveTheme } from '../../utils/localStorage'
 
 export default {
   mixins: [ebookMixin],
-  computed: {
-    themeList() {
-      return themeList(this)
-    }
-  },
   methods: {
-    setTheme(index) {
+    async setTheme(index) {
       const theme = this.themeList[index]
-      this.setDefaultTheme(theme.name)
+      await this.setDefaultTheme(theme.name)
+      this.currentBook.rendition.themes.select(this.defaultTheme)
+      saveTheme(this.fileName, theme.name)
     }
   }
 }
