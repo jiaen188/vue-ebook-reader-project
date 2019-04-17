@@ -1,4 +1,4 @@
-import { themeList, addCss } from './book'
+import { themeList, addCss, removeAllCss } from './book'
 import { mapState, mapActions } from 'vuex'
 
 export const ebookMixin = {
@@ -29,6 +29,7 @@ export const ebookMixin = {
       'setDefaultTheme'
     ]),
     initGlobalStyle() {
+      removeAllCss()
       switch (this.defaultTheme) {
         case 'Default':
           addCss('../../assets/styles/themes/theme_default.css')
