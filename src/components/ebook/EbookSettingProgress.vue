@@ -58,9 +58,9 @@ export default {
       // this.displayProgress()
       this.updateProgressBg()
     },
-    displayProgress() {
+    async displayProgress() {
       const cfi = this.currentBook.locations.cfiFromPercentage(this.progress / 100)
-      this.currentBook.rendition.display(cfi)
+      this.display(cfi)
     },
     updateProgressBg() {
       this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
@@ -80,14 +80,8 @@ export default {
     async displaySection() { // 跳转到某个章节
       const sectionInfo = this.currentBook.section(this.section)
       if (sectionInfo && sectionInfo.href) {
-        await this.currentBook.rendition.display(sectionInfo.href)
-        this.refreshLocation()
+        this.display(sectionInfo.href)
       }
-    },
-    refreshLocation() { // 刷新进度
-      const currentLocation = this.currentBook.rendition.currentLocation()
-      const progress = this.currentBook.locations.percentageFromCfi(currentLocation.start.cfi)
-      this.setProgress(Math.floor(progress * 100))
     }
   },
   updated() {
