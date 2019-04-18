@@ -30,6 +30,7 @@ export const ebookMixin = {
     ]),
     initGlobalStyle() {
       removeAllCss()
+      // todo 需要用启动nigx本地服务， 加载的绝对地址css
       switch (this.defaultTheme) {
         case 'Default':
           addCss('../../assets/styles/themes/theme_default.css')
