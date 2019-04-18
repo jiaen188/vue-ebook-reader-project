@@ -8,10 +8,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    rootClass: ''
   },
   mutations: {
-
+    setRootClass: (state, payload) => {
+      state.rootClass = payload
+    }
   },
   actions,
   getters,

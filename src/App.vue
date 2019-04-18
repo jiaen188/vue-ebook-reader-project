@@ -1,11 +1,17 @@
 <template>
-  <div id="app">
+  <div id="app" :class="rootClass">
     <router-view/>
   </div>
 </template>
 
 <script>
-export default {}
+import { mapState } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState(['rootClass'])
+  }
+}
 document.addEventListener('DOMContentLoaded', () => {
   const html = document.querySelector('html')
   let fontSize = window.innerWidth / 10
@@ -21,3 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
   overflow: hidden;
 }
 </style>
+
+<style lang="scss">
+@import './assets/styles/theme/theme_default.scss';
+@import './assets/styles/theme/theme_eye.scss';
+@import './assets/styles/theme/theme_gold.scss';
+@import './assets/styles/theme/theme_night.scss';
+</style>
+
