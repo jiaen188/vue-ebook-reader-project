@@ -72,12 +72,7 @@ export default {
       })
       this.rendition.themes.select(defaultTheme)
     },
-    initEpub() {
-      // todo 需要用启动nigx本地服务
-      const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
-      this.book = new Epub('/2018_Book_AgileProcessesInSoftwareEngine.epub' || url)
-      console.log('this.book', this.book)
-      this.setCurrentBook(this.book)
+    initRendition() {
       this.rendition = this.book.renderTo('read', {
         width: innerWidth,
         height: innerHeight,
@@ -89,6 +84,18 @@ export default {
         this.initFontFamily()
         this.initGlobalStyle()
       })
+      this.rendition.hooks.content.register(contents => {
+        // 目前仅支持 cabin
+        // todo 需要用启动nigx本地服务， 加载的绝对地址css
+        Promise.all([
+          contents.addStylesheet('../../assets/fonts/dayOne.css'),
+          contents.addStylesheet('../../assets/fonts/cabin.css'),
+          contents.addStylesheet('../../assets/fonts/montserrat.css'),
+          contents.addStylesheet('../../assets/fonts/tangerine.css')
+        ]).then(() => {})
+      })
+    },
+    initGesture() {
       this.rendition.on('touchstart', event => {
         this.touchStartX = event.changedTouches[0].clientX
         this.touchStartTime = event.timeStamp
@@ -107,15 +114,19 @@ export default {
         event.preventDefault()
         event.stopPropagation()
       })
-      this.rendition.hooks.content.register(contents => {
-        // 目前仅支持 cabin
-        // todo 需要用启动nigx本地服务， 加载的绝对地址css
-        Promise.all([
-          contents.addStylesheet('../../assets/fonts/dayOne.css'),
-          contents.addStylesheet('../../assets/fonts/cabin.css'),
-          contents.addStylesheet('../../assets/fonts/montserrat.css'),
-          contents.addStylesheet('../../assets/fonts/tangerine.css')
-        ]).then(() => {})
+    },
+    initEpub() {
+      // todo 需要用启动nigx本地服务
+      const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
+      this.book = new Epub('/2018_Book_AgileProcessesInSoftwareEngine.epub' || url)
+      console.log('this.book', this.book)
+      this.setCurrentBook(this.book)
+      this.initRendition()
+      this.initGesture()
+      this.book.ready.then(() => {
+        return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
+      }).then(locations => {
+        this.setBookAvailable(true)
       })
     }
   },

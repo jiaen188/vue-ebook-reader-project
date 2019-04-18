@@ -36,10 +36,28 @@ import { ebookMixin } from '../../utils/mixin'
 export default {
   mixins: [ebookMixin],
   methods: {
-    onProgressChange() {},
-    onProgressInput() {},
+    async onProgressChange(progress) {
+      await this.setProgress(progress)
+      this.displayProgress()
+      this.updateProgressBg()
+    },
+    async onProgressInput(progress) {
+      await this.setProgress(progress)
+      // this.displayProgress()
+      this.updateProgressBg()
+    },
+    displayProgress() {
+      const cfi = this.currentBook.locations.cfiFromPercentage(this.progress / 100)
+      this.currentBook.rendition.display(cfi)
+    },
+    updateProgressBg() {
+      this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
+    },
     prevSection() {},
     nextSection() {}
+  },
+  updated() {
+    this.updateProgressBg()
   }
 }
 </script>
@@ -83,7 +101,7 @@ export default {
             -webkit-appearance: none;
             height: px2rem(2);
             background: -webkit-linear-gradient(#999, #999) no-repeat, #ddd;
-            background-size: 0 100% !important;
+            // background-size: 0 100% !important;
             margin: 0 px2rem(10);
             &:focus {
               outline: none;
