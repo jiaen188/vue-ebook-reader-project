@@ -11,7 +11,9 @@ export const ebookMixin = {
       'currentBook',
       'defaultFontFamily',
       'fontFamilyVisible',
-      'defaultTheme'
+      'defaultTheme',
+      'bookAvailable',
+      'progress'
     ]),
     themeList() {
       return themeList(this)
@@ -26,7 +28,9 @@ export const ebookMixin = {
       'setCurrentBook',
       'setDefaultFontFamily',
       'setFontFamilyVisible',
-      'setDefaultTheme'
+      'setDefaultTheme',
+      'setBookAvailable',
+      'setProgress'
     ]),
     initGlobalStyle() {
       removeAllCss()
