@@ -10,7 +10,8 @@ const book = {
     fontFamilyVisible: false,
     defaultTheme: 'Default',
     bookAvailable: false,
-    progress: 0
+    progress: 0,
+    section: 0
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -42,6 +43,9 @@ const book = {
     },
     'SET_PROGRESS': (state, progress) => {
       state.progress = progress
+    },
+    'SET_SECTION': (state, section) => {
+      state.section = section
     }
   },
   actions: {
@@ -74,6 +78,9 @@ const book = {
     },
     setProgress: ({ commit }, progress) => {
       return commit('SET_PROGRESS', progress)
+    },
+    setSection: ({ commit }, section) => {
+      return commit('SET_SECTION', section)
     }
   }
 }

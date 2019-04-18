@@ -13,7 +13,8 @@ export const ebookMixin = {
       'fontFamilyVisible',
       'defaultTheme',
       'bookAvailable',
-      'progress'
+      'progress',
+      'section'
     ]),
     themeList() {
       return themeList(this)
@@ -30,7 +31,8 @@ export const ebookMixin = {
       'setFontFamilyVisible',
       'setDefaultTheme',
       'setBookAvailable',
-      'setProgress'
+      'setProgress',
+      'setSection'
     ]),
     initGlobalStyle() {
       removeAllCss()

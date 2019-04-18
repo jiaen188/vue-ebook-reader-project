@@ -7,8 +7,8 @@
           <span class="icon-forward"></span>
         </div>
         <div class="progress-wrapper">
-          <div class="progress-icon-wrapper">
-            <span class="icon-back" @click="prevSection"></span>
+          <div class="progress-icon-wrapper" @click="prevSection">
+            <span class="icon-back"></span>
           </div>
           <input class="progress" type="range"
                   max="100"
@@ -18,8 +18,8 @@
                   :value="progress"
                   :disabled="!bookAvailable"
                   ref="progress">
-          <div class="progress-icon-wrapper">
-            <span class="icon-forward" @click="nextSection"></span>
+          <div class="progress-icon-wrapper" @click="nextSection">
+            <span class="icon-forward"></span>
           </div>
         </div>
         <div class="text-wrapper">
@@ -53,8 +53,30 @@ export default {
     updateProgressBg() {
       this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
     },
-    prevSection() {},
-    nextSection() {}
+    async prevSection() { // 前一章节
+      if (this.section > 0 && this.bookAvailable) {
+        await this.setSection(this.section - 1)
+        this.displaySection()
+      }
+    },
+    async nextSection() { // 后一章节
+      if (this.section < this.currentBook.spine.length - 1 && this.bookAvailable) {
+        await this.setSection(this.section + 1)
+        this.displaySection()
+      }
+    },
+    async displaySection() { // 跳转到某个章节
+      const sectionInfo = this.currentBook.section(this.section)
+      if (sectionInfo && sectionInfo.href) {
+        await this.currentBook.rendition.display(sectionInfo.href)
+        this.refreshLocation()
+      }
+    },
+    refreshLocation() { // 刷新进度
+      const currentLocation = this.currentBook.rendition.currentLocation()
+      const progress = this.currentBook.locations.percentageFromCfi(currentLocation.start.cfi)
+      this.setProgress(Math.floor(progress * 100))
+    }
   },
   updated() {
     this.updateProgressBg()
