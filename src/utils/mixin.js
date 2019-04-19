@@ -75,6 +75,11 @@ export const ebookMixin = {
         })
       }
       if (cb) cb()
+    },
+    hideTitleAndMenu() {
+      this.setMenuVisible(false)
+      this.setSettingVisible(-1)
+      this.setFontFamilyVisible(false)
     }
   }
 }
