@@ -1,6 +1,7 @@
 // import { themeList, addCss, removeAllCss } from './book'
 import { themeList } from './book'
 import { mapState, mapActions, mapMutations } from 'vuex'
+import { saveLocation } from './localStorage'
 
 export const ebookMixin = {
   computed: {
@@ -12,7 +13,10 @@ export const ebookMixin = {
       'currentBook',
       'defaultFontFamily',
       'fontFamilyVisible',
-      'defaultTheme'
+      'defaultTheme',
+      'bookAvailable',
+      'progress',
+      'section'
     ]),
     themeList() {
       return themeList(this)
@@ -27,7 +31,10 @@ export const ebookMixin = {
       'setCurrentBook',
       'setDefaultFontFamily',
       'setFontFamilyVisible',
-      'setDefaultTheme'
+      'setDefaultTheme',
+      'setBookAvailable',
+      'setProgress',
+      'setSection'
     ]),
     ...mapMutations(['setRootClass']),
     // initGlobalStyle() {
@@ -51,6 +58,7 @@ export const ebookMixin = {
     //   }
     // }
     initGlobalStyle() {
+      // todo 需要用启动nigx本地服务， 加载的绝对地址css
       switch (this.defaultTheme) {
         case 'Default':
           this.setRootClass('theme-default')
@@ -68,6 +76,31 @@ export const ebookMixin = {
           this.setRootClass('theme-default')
           break
       }
+    },
+    refreshLocation() { // 刷新进度
+      const currentLocation = this.currentBook.rendition.currentLocation()
+      const startCfi = currentLocation.start.cfi
+      const progress = this.currentBook.locations.percentageFromCfi(startCfi)
+      this.setProgress(Math.floor(progress * 100))
+      this.setSection(currentLocation.start.index)
+      saveLocation(this.fileName, startCfi)
+    },
+    display(target, cb) {
+      if (target) {
+        this.currentBook.rendition.display(target).then(() => {
+          this.refreshLocation()
+        })
+      } else {
+        this.currentBook.rendition.display().then(() => {
+          this.refreshLocation()
+        })
+      }
+      if (cb) cb()
+    },
+    hideTitleAndMenu() {
+      this.setMenuVisible(false)
+      this.setSettingVisible(-1)
+      this.setFontFamilyVisible(false)
     }
   }
 }

@@ -7,7 +7,7 @@
 <script>
 import { ebookMixin } from '../../utils/mixin'
 import Epub from 'epubjs'
-import { getFontFamily, saveFontFamily, getFontSize, saveFontSize, saveTheme, getTheme } from '../../utils/localStorage'
+import { getFontFamily, saveFontFamily, getFontSize, saveFontSize, saveTheme, getTheme, getLocation } from '../../utils/localStorage'
 global.ePub = Epub
 
 export default {
@@ -15,13 +15,17 @@ export default {
   methods: {
     prevPage() {
       if (this.rendition) {
-        this.rendition.prev()
+        this.rendition.prev().then(() => {
+          this.refreshLocation()
+        })
         this.hideTitleAndMenu()
       }
     },
     nextPage() {
       if (this.rendition) {
-        this.rendition.next()
+        this.rendition.next().then(() => {
+          this.refreshLocation()
+        })
         this.hideTitleAndMenu()
       }
     },
@@ -31,11 +35,6 @@ export default {
         this.setFontFamilyVisible(false)
       }
       this.setMenuVisible(!this.menuVisible)
-    },
-    hideTitleAndMenu() {
-      this.setMenuVisible(false)
-      this.setSettingVisible(-1)
-      this.setFontFamilyVisible(false)
     },
     initFontSize() {
       let fontSize = getFontSize(this.fileName)
@@ -72,22 +71,31 @@ export default {
       })
       this.rendition.themes.select(defaultTheme)
     },
-    initEpub() {
-      const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
-      this.book = new Epub('/2018_Book_AgileProcessesInSoftwareEngine.epub' || url)
-      console.log('this.book', this.book)
-      this.setCurrentBook(this.book)
+    initRendition() {
       this.rendition = this.book.renderTo('read', {
         width: innerWidth,
         height: innerHeight,
         methods: 'default'
       })
-      this.rendition.display().then(() => {
+      const location = getLocation(this.fileName)
+      this.display(location, () => {
         this.initTheme()
         this.initFontSize()
         this.initFontFamily()
         this.initGlobalStyle()
       })
+      this.rendition.hooks.content.register(contents => {
+        // 目前仅支持 cabin
+        // todo 需要用启动nigx本地服务， 加载的绝对地址css
+        Promise.all([
+          contents.addStylesheet('../../assets/fonts/dayOne.css'),
+          contents.addStylesheet('../../assets/fonts/cabin.css'),
+          contents.addStylesheet('../../assets/fonts/montserrat.css'),
+          contents.addStylesheet('../../assets/fonts/tangerine.css')
+        ]).then(() => {})
+      })
+    },
+    initGesture() {
       this.rendition.on('touchstart', event => {
         this.touchStartX = event.changedTouches[0].clientX
         this.touchStartTime = event.timeStamp
@@ -106,14 +114,21 @@ export default {
         event.preventDefault()
         event.stopPropagation()
       })
-      this.rendition.hooks.content.register(contents => {
-        // 目前仅支持 cabin
-        Promise.all([
-          contents.addStylesheet('../../assets/fonts/dayOne.css'),
-          contents.addStylesheet('../../assets/fonts/cabin.css'),
-          contents.addStylesheet('../../assets/fonts/montserrat.css'),
-          contents.addStylesheet('../../assets/fonts/tangerine.css')
-        ]).then(() => {})
+    },
+    initEpub() {
+      // todo 需要用启动nigx本地服务
+      const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
+      this.book = new Epub('/2018_Book_AgileProcessesInSoftwareEngine.epub' || url)
+      console.log('this.book', this.book)
+      this.setCurrentBook(this.book)
+      this.initRendition()
+      this.initGesture()
+      // 分页功能
+      this.book.ready.then(() => {
+        return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
+      }).then(locations => {
+        this.setBookAvailable(true)
+        this.refreshLocation()
       })
     }
   },
