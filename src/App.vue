@@ -34,4 +34,3 @@ document.addEventListener('DOMContentLoaded', () => {
 @import './assets/styles/theme/theme_gold.scss';
 @import './assets/styles/theme/theme_night.scss';
 </style>
-

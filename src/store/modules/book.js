@@ -11,7 +11,8 @@ const book = {
     defaultTheme: 'Default',
     bookAvailable: false,
     progress: 0,
-    section: 0
+    section: 0,
+    cover: null
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -46,6 +47,9 @@ const book = {
     },
     'SET_SECTION': (state, section) => {
       state.section = section
+    },
+    'SET_COVER': (state, cover) => {
+      state.cover = cover
     }
   },
   actions: {
@@ -81,6 +85,9 @@ const book = {
     },
     setSection: ({ commit }, section) => {
       return commit('SET_SECTION', section)
+    },
+    setCover: ({ commit }, cover) => {
+      return commit('SET_COVER', cover)
     }
   }
 }

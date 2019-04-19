@@ -1,3 +1,5 @@
+import { getReadTime } from './localStorage'
+
 export const FONT_SIZE_LIST = [
   { fontSize: 12 },
   { fontSize: 14 },
@@ -84,4 +86,9 @@ export function removeAllCss() {
   removeCss('../../assets/styles/themes/theme_eye.css')
   removeCss('../../assets/styles/themes/theme_gold.css')
   removeCss('../../assets/styles/themes/theme_night.css')
+}
+
+export function getReadTimeMinute(fileName) {
+  const readTime = getReadTime(fileName)
+  return readTime ? Math.ceil(readTime / 60) : 0
 }
