@@ -115,6 +115,16 @@ export default {
         event.stopPropagation()
       })
     },
+    parseBook() {
+      this.book.loaded.cover.then(cover => {
+        this.book.archive.createUrl(cover).then(url => {
+          this.setCover(url)
+        })
+      })
+      this.book.loaded.metadata.then(metadata => {
+        this.setMetadata(metadata)
+      })
+    },
     initEpub() {
       // todo 需要用启动nigx本地服务
       const url = 'http://192.168.31.243:8081/epub/' + this.fileName + '.epub'
@@ -123,6 +133,7 @@ export default {
       this.setCurrentBook(this.book)
       this.initRendition()
       this.initGesture()
+      this.parseBook()
       // 分页功能
       this.book.ready.then(() => {
         return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))

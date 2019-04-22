@@ -12,7 +12,8 @@ const book = {
     bookAvailable: false,
     progress: 0,
     section: 0,
-    cover: null
+    cover: null,
+    metadata: null
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -50,6 +51,9 @@ const book = {
     },
     'SET_COVER': (state, cover) => {
       state.cover = cover
+    },
+    'SET_METADATA': (state, metadata) => {
+      state.metadata = metadata
     }
   },
   actions: {
@@ -88,6 +92,9 @@ const book = {
     },
     setCover: ({ commit }, cover) => {
       return commit('SET_COVER', cover)
+    },
+    setMetadata: ({ commit }, metadata) => {
+      return commit('SET_METADATA', metadata)
     }
   }
 }

@@ -14,13 +14,13 @@
         <img :src="cover" class="slide-contents-book-img">
       </div>
       <div class="slide-contents-book-info-wrapper">
-        <div class="slide-contents-book-title"></div>
-        <div class="slide-contents-book-author"></div>
+        <div class="slide-contents-book-title">{{metadata.title}}</div>
+        <div class="slide-contents-book-author">{{metadata.creator}}</div>
       </div>
       <div class="slide-contents-book-progress-wrapper">
         <div class="slide-contents-book-progress">
           <span class="progress">{{progress + '%'}}</span>
-          <div class="progeress-text">{{$t('book.haveRead2')}}</div>
+          <span class="progeress-text">{{$t('book.haveRead2')}}</span>
         </div>
         <div class="slide-contents-book-time">{{getReadTimeText()}}</div>
       </div>
@@ -54,6 +54,7 @@ export default {
 
 .ebook-slide-contents {
   width: 100%;
+  font-size: 0;
   .slide-contents-search {
     &-wrapper {
       display: flex;
@@ -87,6 +88,53 @@ export default {
       flex: 0 0 px2rem(50);
       font-size: px2rem(14);
       @include right;
+    }
+  }
+  .slide-contents-book {
+    &-wrapper {
+      display: flex;
+      width: 100%;
+      height: px2rem(90);
+      padding: px2rem(10) px2rem(15) px2rem(20) px2rem(15);
+      box-sizing: border-box;
+    }
+    &-img-wrapper {
+      flex: 0 0 px2rem(45);
+    }
+    &-img {
+      width: px2rem(45);
+      height: px2rem(60);
+    }
+    &-info-wrapper {
+      flex: 1;
+      padding: 0 px2rem(10);
+      box-sizing: border-box;
+    }
+    &-title {
+      width: px2rem(153.75);
+      font-size: px2rem(14);
+      @include ellipsis2(3);
+    }
+    &-author {
+      width: px2rem(153.75);
+      font-size: px2rem(12);
+      margin-top: px2rem(5);
+      @include ellipsis;
+    }
+    &-progress-wrapper {
+      flex: 0 0 px2rem(70);
+    }
+    &-progress {
+      .progress {
+        font-size: px2rem(14);
+      }
+      .progeress-text {
+        font-size: px2rem(12);
+      }
+    }
+    &-time {
+      font-size: px2rem(12);
+      margin-top: px2rem(5);
     }
   }
 }

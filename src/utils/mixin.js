@@ -17,7 +17,8 @@ export const ebookMixin = {
       'bookAvailable',
       'progress',
       'section',
-      'cover'
+      'cover',
+      'metadata'
     ]),
     themeList() {
       return themeList(this)
@@ -36,7 +37,8 @@ export const ebookMixin = {
       'setBookAvailable',
       'setProgress',
       'setSection',
-      'setCover'
+      'setCover',
+      'setMetadata'
     ]),
     ...mapMutations(['setRootClass']),
     // initGlobalStyle() {
