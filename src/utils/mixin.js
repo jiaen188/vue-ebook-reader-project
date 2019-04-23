@@ -18,7 +18,8 @@ export const ebookMixin = {
       'progress',
       'section',
       'cover',
-      'metadata'
+      'metadata',
+      'navigation'
     ]),
     themeList() {
       return themeList(this)
@@ -38,7 +39,8 @@ export const ebookMixin = {
       'setProgress',
       'setSection',
       'setCover',
-      'setMetadata'
+      'setMetadata',
+      'setNavigation'
     ]),
     ...mapMutations(['setRootClass']),
     // initGlobalStyle() {

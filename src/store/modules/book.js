@@ -13,7 +13,8 @@ const book = {
     progress: 0,
     section: 0,
     cover: null,
-    metadata: null
+    metadata: null,
+    navigation: null
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -54,6 +55,9 @@ const book = {
     },
     'SET_METADATA': (state, metadata) => {
       state.metadata = metadata
+    },
+    'SET_NAVIGATION': (state, navigation) => {
+      state.navigation = navigation
     }
   },
   actions: {
@@ -95,6 +99,9 @@ const book = {
     },
     setMetadata: ({ commit }, metadata) => {
       return commit('SET_METADATA', metadata)
+    },
+    setNavigation: ({ commit }, navigation) => {
+      return commit('SET_NAVIGATION', navigation)
     }
   }
 }

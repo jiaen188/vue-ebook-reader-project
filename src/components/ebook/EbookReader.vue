@@ -8,6 +8,7 @@
 import { ebookMixin } from '../../utils/mixin'
 import Epub from 'epubjs'
 import { getFontFamily, saveFontFamily, getFontSize, saveFontSize, saveTheme, getTheme, getLocation } from '../../utils/localStorage'
+import { flatten } from '../../utils/book'
 global.ePub = Epub
 
 export default {
@@ -123,6 +124,18 @@ export default {
       })
       this.book.loaded.metadata.then(metadata => {
         this.setMetadata(metadata)
+      })
+      this.book.loaded.navigation.then(nav => {
+        const navItem = flatten(nav.toc)
+        console.log('navitem', navItem)
+        function find(item, level = 0) {
+          return !item.parent ? level : find(navItem.filter(parentItem => parentItem.id === item.parent)[0], ++level)
+        }
+        navItem.forEach(item => {
+          item.level = find(item)
+        })
+        console.log('navitem', navItem)
+        this.setNavigation(navItem)
       })
     },
     initEpub() {
