@@ -95,13 +95,14 @@ export const ebookMixin = {
       if (target) {
         this.currentBook.rendition.display(target).then(() => {
           this.refreshLocation()
+          if (cb) cb()
         })
       } else {
         this.currentBook.rendition.display().then(() => {
           this.refreshLocation()
+          if (cb) cb()
         })
       }
-      if (cb) cb()
     },
     hideTitleAndMenu() {
       this.setMenuVisible(false)
