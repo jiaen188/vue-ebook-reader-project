@@ -5,11 +5,11 @@
         <div class="slide-contents-search-icon">
           <span class="icon-search"></span>
         </div>
-        <input type="text" class="slide-contents-search-input" :placeholder="$t('book.searchHint')" @click="showSearchPage">
+        <input type="text" v-model="searchText" class="slide-contents-search-input" :placeholder="$t('book.searchHint')" @keyup.enter.exact="search" @click="showSearchPage">
       </div>
       <div class="slide-contents-search-cancel" v-show="searchVisible" @click="hideSearchPage">{{$t('book.cancel')}}</div>
     </div>
-    <div class="slide-contents-book-wrapper">
+    <div class="slide-contents-book-wrapper" v-show="!searchVisible">
       <div class="slide-contents-book-img-wrapper">
         <img :src="cover" class="slide-contents-book-img">
       </div>
@@ -25,11 +25,14 @@
         <div class="slide-contents-book-time">{{getReadTimeText()}}</div>
       </div>
     </div>
-    <scroll class="slide-contents-list" :top="156" :bottom="48" ref="scroll">
+    <scroll class="slide-contents-list" :top="156" :bottom="48" ref="scroll" v-show="!searchVisible">
       <div class="slide-contents-item" v-for="(item, index) in navigation" :key="index" @click="displayNavigation(item.href)">
         <span class="slide-contents-item-label" :class="{'selected': section === index}" :style="contentItemStyle(item)">{{item.label}}</span>
         <span class="slide-contents-item-page"></span>
       </div>
+    </scroll>
+    <scroll class="slide-search-list" :top="66" :bottom="48" v-show="searchVisible">
+      <div class="slide-search-item" v-for="(item, index) in searchList" :key="index" v-html="item.excerpt" @click="displaySearch(item.cfi)"></div>
     </scroll>
   </div>
 </template>
@@ -43,10 +46,35 @@ export default {
   mixins: [ebookMixin],
   data() {
     return {
-      searchVisible: false
+      searchVisible: false,
+      searchList: null,
+      searchText: ''
     }
   },
   methods: {
+    displaySearch(target) {
+      this.display(target, () => {
+        this.hideTitleAndMenu()
+      })
+    },
+    search() {
+      if (this.searchText && this.searchText.length > 0) {
+        this.doSearch(this.searchText).then(list => {
+          this.searchList = list.map(item => {
+            item.excerpt = item.excerpt.replace(this.searchText, `<span class="content-search-text">${this.searchText}</span>`)
+            return item
+          })
+        })
+      }
+    },
+    doSearch(q) {
+      return Promise.all(
+        this.currentBook.spine.spineItems.map(
+          section => section.load(this.currentBook.load.bind(this.currentBook))
+            .then(section.find.bind(section, q))
+            .finally(section.unload.bind(section)))
+      ).then(results => Promise.resolve([].concat.apply([], results)))
+    },
     displayNavigation(target) {
       this.display(target, () => {
         this.hideTitleAndMenu()
@@ -62,6 +90,8 @@ export default {
     },
     hideSearchPage() {
       this.searchVisible = false
+      this.searchList = null
+      this.searchText = ''
     }
   },
   components: {
@@ -176,6 +206,19 @@ export default {
       &-page {
 
       }
+    }
+  }
+  .slide-search {
+    &-list {
+      width: 100%;
+      padding: 0 px2rem(15);
+      box-sizing: border-box;
+    }
+    &-item {
+      font-size: px2rem(14);
+      line-height: px2rem(16);
+      padding: px2rem(20) 0;
+      box-sizing: border-box;
     }
   }
 }
