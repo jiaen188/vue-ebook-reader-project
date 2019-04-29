@@ -26,13 +26,13 @@
       </div>
     </div>
     <scroll class="slide-contents-list" :top="156" :bottom="48" ref="scroll" v-show="!searchVisible">
-      <div class="slide-contents-item" v-for="(item, index) in navigation" :key="index" @click="displayNavigation(item.href)">
+      <div class="slide-contents-item" v-for="(item, index) in navigation" :key="index" @click="displayContent(item.href)">
         <span class="slide-contents-item-label" :class="{'selected': section === index}" :style="contentItemStyle(item)">{{item.label}}</span>
         <span class="slide-contents-item-page"></span>
       </div>
     </scroll>
     <scroll class="slide-search-list" :top="66" :bottom="48" v-show="searchVisible">
-      <div class="slide-search-item" v-for="(item, index) in searchList" :key="index" v-html="item.excerpt" @click="displaySearch(item.cfi)"></div>
+      <div class="slide-search-item" v-for="(item, index) in searchList" :key="index" v-html="item.excerpt" @click="displayContent(item.cfi, true)"></div>
     </scroll>
   </div>
 </template>
@@ -52,11 +52,6 @@ export default {
     }
   },
   methods: {
-    displaySearch(target) {
-      this.display(target, () => {
-        this.hideTitleAndMenu()
-      })
-    },
     search() {
       if (this.searchText && this.searchText.length > 0) {
         this.doSearch(this.searchText).then(list => {
@@ -75,9 +70,12 @@ export default {
             .finally(section.unload.bind(section)))
       ).then(results => Promise.resolve([].concat.apply([], results)))
     },
-    displayNavigation(target) {
+    displayContent(target, highlight = false) {
       this.display(target, () => {
         this.hideTitleAndMenu()
+        if (highlight) {
+          this.currentBook.rendition.annotations.highlight(target)
+        }
       })
     },
     contentItemStyle(item) {
