@@ -14,7 +14,8 @@ const book = {
     section: 0,
     cover: null,
     metadata: null,
-    navigation: null
+    navigation: null,
+    offsetY: 0
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -58,6 +59,9 @@ const book = {
     },
     'SET_NAVIGATION': (state, navigation) => {
       state.navigation = navigation
+    },
+    'SET_OFFSETY': (state, offsetY) => {
+      state.offsetY = offsetY
     }
   },
   actions: {
@@ -102,6 +106,9 @@ const book = {
     },
     setNavigation: ({ commit }, navigation) => {
       return commit('SET_NAVIGATION', navigation)
+    },
+    setOffsetY({ commit }, offsetY) {
+      return commit('SET_OFFSETY', offsetY)
     }
   }
 }
