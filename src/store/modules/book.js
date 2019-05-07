@@ -15,7 +15,8 @@ const book = {
     cover: null,
     metadata: null,
     navigation: null,
-    offsetY: 0
+    offsetY: 0,
+    isBookmark: null
   },
   mutations: {
     'SET_FILENAME': (state, payload) => {
@@ -62,6 +63,9 @@ const book = {
     },
     'SET_OFFSETY': (state, offsetY) => {
       state.offsetY = offsetY
+    },
+    'SET_IS_BOOKMARK': (state, isBookmark) => {
+      state.isBookmark = isBookmark
     }
   },
   actions: {
@@ -109,6 +113,9 @@ const book = {
     },
     setOffsetY({ commit }, offsetY) {
       return commit('SET_OFFSETY', offsetY)
+    },
+    setIsBookmark({ commit }, isBookmark) {
+      return commit('SET_IS_BOOKMARK', isBookmark)
     }
   }
 }
